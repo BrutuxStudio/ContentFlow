@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ContentFlow - Plateforme de contenu automatisée</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif; }
+        
+        @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-20px); } }
+        @keyframes slideIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes glow { 0%, 100% { box-shadow: 0 0 20px rgba(59, 130, 246, 0.3); } 50% { box-shadow: 0 0 40px rgba(59, 130, 246, 0.6); } }
+        
+        .animate-float { animation: float 3s ease-in-out infinite; }
+        .animate-slide { animation: slideIn 0.8s ease-out; }
+        .animate-glow { animation: glow 3s ease-in-out infinite; }
+        
+        .gradient-1 { background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); }
+        .gradient-2 { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .gradient-3 { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+        .glass { backdrop-filter: blur(10px); background: rgba(255, 255, 255, 0.1); }
+        
+        .hero-bg {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-bg::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.2) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: float 8s ease-in-out infinite;
+        }
+        
+        .hero-bg::after {
+            content: '';
+            position: absolute;
+            bottom: -20%;
+            left: 10%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(139, 92, 246, 0.15) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: float 10s ease-in-out infinite 1s;
+        }
+        
+        .mockup-card {
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+            border-radius: 20px;
+            padding: 2px;
+            position: relative;
+        }
+        
+        .mockup-inner {
+            background: #0f172a;
+            border-radius: 18px;
+            padding: 24px;
+            color: white;
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-white">
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 backdrop-blur-lg bg-slate-950/80 border-b border-white/10">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+            <div class="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">ContentFlow</div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-bg pt-32 pb-20 px-6 relative z-10">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16 animate-slide">
+                <h1 class="text-6xl md:text-7xl font-bold mb-6 leading-tight">
+                    Publiez du contenu<br>
+                    <span class="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+                        chaque semaine<br>sans effort
+                    </span>
+                </h1>
+                
+                <p class="text-xl text-gray-300 max-w-2xl mx-auto mb-12">
+                    Restez visible sur LinkedIn, Facebook et Instagram. L'app suggère les sujets, génère le contenu, vous approuvez. Publié en secondes.
+                </p>
+            </div>
+
+            <!-- Hero Mockup -->
+            <div class="animate-slide" style="animation-delay: 0.2s;">
+                <div class="mockup-card">
+                    <div class="mockup-inner">
+                        <div class="rounded-lg overflow-hidden">
+                            <!-- Simulated Dashboard Preview -->
+                            <div class="bg-slate-900 p-6 border border-white/10">
+                                <div class="flex items-center justify-between mb-8">
+                                    <div>
+                                        <p class="text-xs text-gray-400 mb-2">SEMAINE 24</p>
+                                        <h3 class="text-xl font-bold">Suggestions de contenu</h3>
+                                    </div>
+                                    <div class="text-right">
+                                        <p class="text-3xl font-bold text-blue-400">14</p>
+                                        <p class="text-xs text-gray-400">sujets proposés</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="space-y-3">
+                                    <div class="flex items-center gap-3 p-4 bg-white/5 rounded-lg border border-white/10 hover:border-blue-400/50 cursor-pointer transition-colors">
+                                        <div class="w-10 h-10 rounded-lg bg-gradient-to-r from-blue-500 to-purple-500"></div>
+                                        <div class="flex-1">
+                                            <p class="font-medium">Les tendances du marché Q4 2024</p>
+                                            <p class="text-xs text-gray-400">Proposition: Image + texte</p>
+                                        </div>
+                                        <span class="text-xs bg-green-500/20 text-green-300 px-3 py-1 rounded-full">Optimal</span>
+                                    </div>
+                                    
+                                    <div class="flex items-center gap-3 p-4 bg-white/5 rounded-lg border border-white/10">
+                                        <div class="w-10 h-10 rounded-lg bg-gradient-to-r from-green-500 to-teal-500"></div>
+                                        <div class="flex-1">
+                                            <p class="font-medium">5 conseils pour bien négocier</p>
+                                            <p class="text-xs text-gray-400">Proposition: Carousel 5 images</p>
+                                        </div>
+                                        <span class="text-xs bg-blue-500/20 text-blue-300 px-3 py-1 rounded-full">Approuver</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="px-6 py-24 bg-slate-900/50">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-5xl font-bold mb-4">Tout ce que vous devez faire</h2>
+                <p class="text-xl text-gray-400">Votre app gère le reste</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8 mb-16">
+                <div class="group p-8 rounded-xl border border-white/10 hover:border-blue-400/50 hover:bg-blue-500/10 transition-all cursor-pointer">
+                    <div class="text-4xl mb-4">1️⃣</div>
+                    <h3 class="text-xl font-bold mb-3 group-hover:text-blue-300 transition-colors">Choisissez vos sujets</h3>
+                    <p class="text-gray-400">Chaque semaine, 14 sujets intelligents. Approuvez celui qui vous convient.</p>
+                </div>
+
+                <div class="group p-8 rounded-xl border border-white/10 hover:border-purple-400/50 hover:bg-purple-500/10 transition-all cursor-pointer">
+                    <div class="text-4xl mb-4">2️⃣</div>
+                    <h3 class="text-xl font-bold mb-3 group-hover:text-purple-300 transition-colors">Validez le contenu</h3>
+                    <p class="text-gray-400">L'app génère texte + image en secondes. Modifiez si besoin, c'est votre app.</p>
+                </div>
+
+                <div class="group p-8 rounded-xl border border-white/10 hover:border-pink-400/50 hover:bg-pink-500/10 transition-all cursor-pointer">
+                    <div class="text-4xl mb-4">3️⃣</div>
+                    <h3 class="text-xl font-bold mb-3 group-hover:text-pink-300 transition-colors">Publiez partout</h3>
+                    <p class="text-gray-400">Un clic. LinkedIn, Facebook, Instagram. Simultanément sur les trois.</p>
+                </div>
+            </div>
+
+            <!-- Feature Cards with Mockups -->
+            <div class="space-y-12">
+                <!-- Feature 1 -->
+                <div class="grid md:grid-cols-2 gap-8 items-center">
+                    <div>
+                        <h3 class="text-3xl font-bold mb-4">Suggestions intelligentes</h3>
+                        <p class="text-lg text-gray-300 mb-6">Chaque semaine, de nouveaux sujets générés basés sur votre secteur immobilier, les tendances actuelles, et vos objectifs.</p>
+                        <ul class="space-y-3">
+                            <li class="flex gap-3 items-start">
+                                <span class="text-blue-400 font-bold mt-1">✓</span>
+                                <span>14 sujets proposés automatiquement</span>
+                            </li>
+                            <li class="flex gap-3 items-start">
+                                <span class="text-blue-400 font-bold mt-1">✓</span>
+                                <span>Adaptés à votre secteur immobilier</span>
+                            </li>
+                            <li class="flex gap-3 items-start">
+                                <span class="text-blue-400 font-bold mt-1">✓</span>
+                                <span>Format recommandé pour chaque post</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="mockup-card animate-float">
+                        <div class="mockup-inner">
+                            <div class="space-y-2 text-sm">
+                                <div class="p-3 bg-white/5 rounded-lg border border-white/10">
+                                    <p class="text-xs text-blue-300 mb-1">RECOMMANDÉ</p>
+                                    <p class="font-medium">Marché immobilier automne 2024</p>
+                                </div>
+                                <div class="p-3 bg-white/5 rounded-lg border border-white/10">
+                                    <p class="text-xs text-purple-300 mb-1">CAROUSEL</p>
+                                    <p class="font-medium">10 erreurs à éviter en achat</p>
+                                </div>
+                                <div class="p-3 bg-white/5 rounded-lg border border-white/10">
+                                    <p class="text-xs text-green-300 mb-1">IMAGE</p>
+                                    <p class="font-medium">Tendance: Maisons écologiques</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="grid md:grid-cols-2 gap-8 items-center md:flex-row-reverse">
+                    <div class="md:order-2">
+                        <h3 class="text-3xl font-bold mb-4">4 formats de contenu</h3>
+                        <p class="text-lg text-gray-300 mb-6">L'app recommande le meilleur format pour chaque post. Images, carousels, designs ou texte seul. Vous pouvez toujours changer.</p>
+                        <ul class="space-y-3">
+                            <li class="flex gap-3 items-start">
+                                <span class="text-purple-400 font-bold mt-1">🖼</span>
+                                <span>Images générées par IA</span>
+                            </li>
+                            <li class="flex gap-3 items-start">
+                                <span class="text-purple-400 font-bold mt-1">📚</span>
+                                <span>Carousels 5-10 images</span>
+                            </li>
+                            <li class="flex gap-3 items-start">
+                                <span class="text-purple-400 font-bold mt-1">📊</span>
+                                <span>Designs graphiques & infos</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="mockup-card animate-float md:order-1">
+                        <div class="mockup-inner">
+                            <div class="grid grid-cols-2 gap-2">
+                                <div class="aspect-square bg-gradient-to-br from-blue-500 to-purple-500 rounded-lg"></div>
+                                <div class="aspect-square bg-gradient-to-br from-green-500 to-teal-500 rounded-lg"></div>
+                                <div class="aspect-square bg-gradient-to-br from-pink-500 to-red-500 rounded-lg"></div>
+                                <div class="aspect-square bg-slate-700 rounded-lg flex items-center justify-center">
+                                    <span class="text-xs text-gray-400">+ formats</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="grid md:grid-cols-2 gap-8 items-center">
+                    <div>
+                        <h3 class="text-3xl font-bold mb-4">Publiez en un clic</h3>
+                        <p class="text-lg text-gray-300 mb-6">Un seul tableau de bord pour gérer LinkedIn, Facebook et Instagram. Publiez simultanément, programez pour plus tard, ou approuvez avant publication.</p>
+                        <ul class="space-y-3">
+                            <li class="flex gap-3 items-start">
+                                <span class="text-pink-400 font-bold mt-1">✓</span>
+                                <span>LinkedIn, Facebook, Instagram unifiés</span>
+                            </li>
+                            <li class="flex gap-3 items-start">
+                                <span class="text-pink-400 font-bold mt-1">✓</span>
+                                <span>Publication immédiate ou programmée</span>
+                            </li>
+                            <li class="flex gap-3 items-start">
+                                <span class="text-pink-400 font-bold mt-1">✓</span>
+                                <span>Historique et analytics intégrés</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="mockup-card animate-float">
+                        <div class="mockup-inner">
+                            <div class="flex gap-2 mb-4">
+                                <div class="flex-1 p-2 bg-white/5 rounded-lg text-center text-xs font-medium border border-blue-400">LinkedIn</div>
+                                <div class="flex-1 p-2 bg-white/5 rounded-lg text-center text-xs font-medium">Facebook</div>
+                                <div class="flex-1 p-2 bg-white/5 rounded-lg text-center text-xs font-medium">Instagram</div>
+                            </div>
+                            <button class="w-full py-3 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg font-semibold text-sm hover:shadow-lg hover:shadow-blue-500/50 transition-all">
+                                Publier maintenant
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="px-6 py-20 bg-gradient-to-r from-blue-900/30 to-purple-900/30">
+        <div class="max-w-6xl mx-auto">
+            <div class="grid md:grid-cols-4 gap-6">
+                <div class="text-center">
+                    <p class="text-5xl font-bold text-blue-300 mb-2">80%</p>
+                    <p class="text-gray-300">De temps économisé</p>
+                </div>
+                <div class="text-center">
+                    <p class="text-5xl font-bold text-purple-300 mb-2">4</p>
+                    <p class="text-gray-300">Formats disponibles</p>
+                </div>
+                <div class="text-center">
+                    <p class="text-5xl font-bold text-pink-300 mb-2">14</p>
+                    <p class="text-gray-300">Sujets par semaine</p>
+                </div>
+                <div class="text-center">
+                    <p class="text-5xl font-bold text-green-300 mb-2">100%</p>
+                    <p class="text-gray-300">Propriétaire</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section class="px-6 py-24">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-5xl font-bold mb-8">Investissement unique</h2>
+            
+            <div class="mockup-card inline-block w-full max-w-md mx-auto">
+                <div class="mockup-inner text-center py-12">
+                    <p class="text-6xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent mb-2">6,450€</p>
+                    <p class="text-gray-400 mb-8">Une seule facture. L'app est vôtre.</p>
+                    
+                    <div class="space-y-4 text-left">
+                        <div class="flex items-center gap-3 py-2">
+                            <span class="text-blue-400">✓</span>
+                            <span>Application propriétaire</span>
+                        </div>
+                        <div class="flex items-center gap-3 py-2">
+                            <span class="text-blue-400">✓</span>
+                            <span>Zéro abonnement mensuel</span>
+                        </div>
+                        <div class="flex items-center gap-3 py-2">
+                            <span class="text-blue-400">✓</span>
+                            <span>Frais API négligeables (~0.20€ par post)</span>
+                        </div>
+                        <div class="flex items-center gap-3 py-2">
+                            <span class="text-blue-400">✓</span>
+                            <span>Livraison en 8-10 semaines</span>
+                        </div>
+                        <div class="flex items-center gap-3 py-2">
+                            <span class="text-blue-400">✓</span>
+                            <span>Formation complète incluse</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/10 px-6 py-12 text-center text-gray-500">
+        <p class="mb-2"><a href="https://brutux.studio" target="_blank" rel="noopener noreferrer" class="hover:text-gray-300 transition-colors">Brutux Studio</a> © 2026</p>
+        <p class="text-sm">Conseil et développement SaaS — Thonon-les-Bains</p>
+    </footer>
+</body>
+</html>
