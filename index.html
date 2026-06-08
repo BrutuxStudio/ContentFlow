@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ContentFlow - Aperçu fonctionnel</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif; }
+        
+        @keyframes slideIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
+        
+        .animate-slide { animation: slideIn 0.6s ease-out; }
+        .animate-float { animation: float 3s ease-in-out infinite; }
+        
+        .hero-bg { background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%); }
+        .glass { backdrop-filter: blur(10px); background: rgba(255, 255, 255, 0.05); }
+        
+        .dashboard-mock {
+            background: #0f172a;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 24px;
+        }
+        
+        .suggestion-card {
+            padding: 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .suggestion-card:hover {
+            background: rgba(59, 130, 246, 0.1);
+            border-color: rgba(59, 130, 246, 0.5);
+            transform: translateY(-2px);
+        }
+        
+        .suggestion-card.active {
+            background: rgba(59, 130, 246, 0.15);
+            border-color: rgba(59, 130, 246, 0.8);
+        }
+        
+        .step-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.6);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .post-preview {
+            background: white;
+            color: #000;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .post-image {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+        }
+
+        .post-content {
+            padding: 16px;
+        }
+
+        .post-text {
+            font-size: 14px;
+            line-height: 1.5;
+            color: #000;
+            margin-bottom: 8px;
+        }
+
+        .post-hashtags {
+            font-size: 13px;
+            color: #0a66c2;
+            margin-bottom: 12px;
+        }
+
+        .post-footer {
+            display: flex;
+            gap: 12px;
+            border-top: 1px solid #e5e7eb;
+            padding-top: 8px;
+            margin-top: 8px;
+            font-size: 13px;
+            color: #666;
+        }
+
+        .post-footer span {
+            display: flex;
+            gap: 4px;
+            align-items: center;
+        }
+
+        .carousel-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .carousel-item {
+            aspect-ratio: 1;
+            border-radius: 8px;
+            font-size: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-white">
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 backdrop-blur-lg bg-slate-950/80 border-b border-white/10">
+        <div class="max-w-7xl mx-auto px-6 py-4">
+            <div class="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">ContentFlow</div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-bg pt-32 pb-24 px-6 relative overflow-hidden">
+        <div class="absolute inset-0 opacity-20">
+            <div class="absolute top-0 right-0 w-96 h-96 bg-blue-500 rounded-full mix-blend-screen filter blur-3xl"></div>
+        </div>
+
+        <div class="max-w-6xl mx-auto relative z-10">
+            <div class="text-center mb-16 animate-slide">
+                <h1 class="text-6xl md:text-7xl font-bold mb-6 leading-tight">
+                    ContentFlow
+                    <br>
+                    <span class="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+                        pour toi
+                    </span>
+                </h1>
+                
+                <p class="text-xl text-gray-300 max-w-2xl mx-auto mb-4">
+                    Une landing page fonctionnelle pour te montrer exactement comment ça marche.
+                </p>
+                <p class="text-base text-gray-400 max-w-2xl mx-auto">
+                    Suggestions hebdo, validation en un clic, publication unifiée. Du concret.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive Demo Section -->
+    <section class="px-6 py-24 bg-slate-900/50">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold mb-4">Ton parcours</h2>
+                <p class="text-gray-400">Suggestions → Contenu généré → Publication</p>
+            </div>
+
+            <!-- Step 1: Suggestions -->
+            <div class="grid md:grid-cols-2 gap-12 items-start mb-20">
+                <div class="animate-slide">
+                    <div class="step-indicator mb-6">
+                        <span class="flex items-center justify-center w-6 h-6 rounded-full bg-blue-500 text-xs font-bold">1</span>
+                        Suggestions hebdo
+                    </div>
+                    <h3 class="text-3xl font-bold mb-4">Chaque semaine</h3>
+                    <p class="text-lg text-gray-300 mb-6">
+                        L'app analyse ton secteur et te propose 14 sujets intelligents. Immobilier, tendances, conseils pratiques.
+                    </p>
+                    <p class="text-gray-400 text-sm">
+                        Clique sur une suggestion pour voir comment ça se transforme en contenu prêt à publier.
+                    </p>
+                </div>
+
+                <div class="dashboard-mock animate-float">
+                    <div class="mb-6">
+                        <p class="text-xs text-blue-300 mb-2">SEMAINE 24 - 14 SUGGESTIONS</p>
+                        <h4 class="text-lg font-bold">Propositions de contenu</h4>
+                    </div>
+
+                    <div id="suggestionsContainer" class="space-y-3">
+                        <div class="suggestion-card suggestion-item active" data-id="1">
+                            <p class="text-sm font-medium mb-1">Tendances marché Q4 2024</p>
+                            <p class="text-xs text-gray-400">Image recommandée</p>
+                            <p class="text-xs text-blue-300 mt-2">→ Clique pour voir le contenu généré</p>
+                        </div>
+                        
+                        <div class="suggestion-card suggestion-item" data-id="2">
+                            <p class="text-sm font-medium mb-1">5 erreurs à éviter lors d'un achat</p>
+                            <p class="text-xs text-gray-400">Carousel recommandé (5 images)</p>
+                            <p class="text-xs text-blue-300 mt-2">→ Clique pour voir le contenu généré</p>
+                        </div>
+
+                        <div class="suggestion-card suggestion-item" data-id="3">
+                            <p class="text-sm font-medium mb-1">Comment négocier le meilleur taux</p>
+                            <p class="text-xs text-gray-400">Image + texte long</p>
+                            <p class="text-xs text-blue-300 mt-2">→ Clique pour voir le contenu généré</p>
+                        </div>
+
+                        <div class="suggestion-card suggestion-item" data-id="4">
+                            <p class="text-sm font-medium mb-1">L'impact des taux d'intérêt en 2024</p>
+                            <p class="text-xs text-gray-400">Design infographique recommandé</p>
+                            <p class="text-xs text-blue-300 mt-2">→ Clique pour voir le contenu généré</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 2: Content Generation -->
+            <div class="grid md:grid-cols-2 gap-12 items-start mb-20">
+                <div class="order-2 md:order-1">
+                    <div id="contentPreview">
+                        <div class="step-indicator mb-6">
+                            <span class="flex items-center justify-center w-6 h-6 rounded-full bg-purple-500 text-xs font-bold">2</span>
+                            Contenu généré
+                        </div>
+                        <!-- Default preview for first item -->
+                        <div class="post-preview">
+                            <div class="post-image">📈</div>
+                            <div class="post-content">
+                                <div class="post-text">
+                                    Les taux d'intérêt baissent en fin d'année. C'est le moment idéal pour tes clients qui envisageaient un achat immobilier. Les prix se stabilisent aussi, créant une opportunité unique pour les acheteurs avisés.
+                                </div>
+                                <div class="post-hashtags">#immobilier #taux #marché2024</div>
+                                <div class="post-footer">
+                                    <span>👍 42K</span>
+                                    <span>💬 1.2K</span>
+                                    <span>↗️ 8.5K</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="order-1 md:order-2 animate-slide">
+                    <div class="step-indicator mb-6">
+                        <span class="flex items-center justify-center w-6 h-6 rounded-full bg-purple-500 text-xs font-bold">2</span>
+                        Validation en un clic
+                    </div>
+                    <h3 class="text-3xl font-bold mb-4">Prêt à publier</h3>
+                    <p class="text-lg text-gray-300 mb-6">
+                        L'app génère le texte et l'image en secondes. Tu valides, modifies si besoin, et c'est bon.
+                    </p>
+                    <ul class="space-y-3">
+                        <li class="flex gap-3 items-start text-gray-300">
+                            <span class="text-blue-400 flex-shrink-0 mt-1">✓</span>
+                            <span>Texte optimisé pour chaque plateforme</span>
+                        </li>
+                        <li class="flex gap-3 items-start text-gray-300">
+                            <span class="text-blue-400 flex-shrink-0 mt-1">✓</span>
+                            <span>Images générées par IA</span>
+                        </li>
+                        <li class="flex gap-3 items-start text-gray-300">
+                            <span class="text-blue-400 flex-shrink-0 mt-1">✓</span>
+                            <span>Hashtags et CTA automatiques</span>
+                        </li>
+                        <li class="flex gap-3 items-start text-gray-300">
+                            <span class="text-blue-400 flex-shrink-0 mt-1">✓</span>
+                            <span>Tu gardes le contrôle total</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Step 3: Publication -->
+            <div class="grid md:grid-cols-2 gap-12 items-start">
+                <div class="animate-slide">
+                    <div class="step-indicator mb-6">
+                        <span class="flex items-center justify-center w-6 h-6 rounded-full bg-pink-500 text-xs font-bold">3</span>
+                        Publication unifiée
+                    </div>
+                    <h3 class="text-3xl font-bold mb-4">Un clic, partout</h3>
+                    <p class="text-lg text-gray-300 mb-6">
+                        LinkedIn, Facebook, Instagram. Un seul tableau de bord. Publie simultanément ou programme pour plus tard.
+                    </p>
+                    <ul class="space-y-3">
+                        <li class="flex gap-3 items-start text-gray-300">
+                            <span class="text-pink-400 flex-shrink-0 mt-1">→</span>
+                            <span>Pub immédiate ou programmée</span>
+                        </li>
+                        <li class="flex gap-3 items-start text-gray-300">
+                            <span class="text-pink-400 flex-shrink-0 mt-1">→</span>
+                            <span>Historique et metriques intégrés</span>
+                        </li>
+                        <li class="flex gap-3 items-start text-gray-300">
+                            <span class="text-pink-400 flex-shrink-0 mt-1">→</span>
+                            <span>Adapter les formats par plateforme</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="dashboard-mock animate-float">
+                    <div class="mb-6">
+                        <p class="text-xs text-pink-300 mb-2">PUBLICATION</p>
+                        <h4 class="text-lg font-bold">Choisis tes réseaux</h4>
+                    </div>
+
+                    <div class="space-y-3">
+                        <div class="p-4 border border-white/10 rounded-lg flex items-center gap-3">
+                            <div class="w-12 h-12 rounded-lg bg-blue-900 flex items-center justify-center text-2xl">in</div>
+                            <div class="flex-1">
+                                <p class="text-sm font-medium">LinkedIn</p>
+                                <p class="text-xs text-gray-400">Publier maintenant</p>
+                            </div>
+                            <input type="checkbox" class="w-4 h-4" checked>
+                        </div>
+
+                        <div class="p-4 border border-white/10 rounded-lg flex items-center gap-3">
+                            <div class="w-12 h-12 rounded-lg bg-blue-600 flex items-center justify-center text-2xl">f</div>
+                            <div class="flex-1">
+                                <p class="text-sm font-medium">Facebook</p>
+                                <p class="text-xs text-gray-400">Publier maintenant</p>
+                            </div>
+                            <input type="checkbox" class="w-4 h-4" checked>
+                        </div>
+
+                        <div class="p-4 border border-white/10 rounded-lg flex items-center gap-3">
+                            <div class="w-12 h-12 rounded-lg bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-2xl">📷</div>
+                            <div class="flex-1">
+                                <p class="text-sm font-medium">Instagram</p>
+                                <p class="text-xs text-gray-400">Semi-automatisé*</p>
+                            </div>
+                            <input type="checkbox" class="w-4 h-4">
+                        </div>
+
+                        <button class="w-full mt-4 py-3 bg-gradient-to-r from-pink-500 to-red-500 rounded-lg font-semibold hover:shadow-lg hover:shadow-pink-500/50 transition-all">
+                            Publier sur les réseaux
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <p class="text-xs text-gray-500 mt-8 text-center">
+                * Instagram: semi-automatisé car Meta n'expose pas d'API complète pour publication autonome. L'app prépare, tu valides.
+            </p>
+        </div>
+    </section>
+
+    <!-- What You Get Section -->
+    <section class="px-6 py-24 bg-slate-900/50">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-4xl font-bold text-center mb-16">Ce que tu reçois</h2>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="p-8 rounded-xl border border-white/10 hover:border-blue-400/50 transition-colors">
+                    <p class="text-5xl mb-4">📱</p>
+                    <h3 class="text-xl font-bold mb-3">Application propriétaire</h3>
+                    <p class="text-gray-400 text-sm">L'app est tienne. Zéro abonnement mensuel. Hébergée, déployée, autonome.</p>
+                </div>
+
+                <div class="p-8 rounded-xl border border-white/10 hover:border-purple-400/50 transition-colors">
+                    <p class="text-5xl mb-4">⚙️</p>
+                    <h3 class="text-xl font-bold mb-3">Entièrement customisée</h3>
+                    <p class="text-gray-400 text-sm">Faite juste pour toi. Ton secteur, ton tone, tes objectifs immobiliers.</p>
+                </div>
+
+                <div class="p-8 rounded-xl border border-white/10 hover:border-pink-400/50 transition-colors">
+                    <p class="text-5xl mb-4">🎓</p>
+                    <h3 class="text-xl font-bold mb-3">Formation complète</h3>
+                    <p class="text-gray-400 text-sm">Je te montre tout. Tu es autonome dès le premier jour.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Investment Section -->
+    <section class="px-6 py-24">
+        <div class="max-w-3xl mx-auto text-center">
+            <h2 class="text-4xl font-bold mb-8">Investissement</h2>
+            
+            <div class="glass rounded-xl border border-white/20 p-12 mb-8">
+                <p class="text-6xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent mb-2">6,450€</p>
+                <p class="text-gray-400 text-lg">Forfait unique, clé en main</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6 text-center">
+                <div>
+                    <p class="text-3xl font-bold text-blue-400 mb-2">8-10 sem</p>
+                    <p class="text-sm text-gray-400">Délai de livraison</p>
+                </div>
+                <div>
+                    <p class="text-3xl font-bold text-purple-400 mb-2">0€</p>
+                    <p class="text-sm text-gray-400">Abonnement mensuel</p>
+                </div>
+                <div>
+                    <p class="text-3xl font-bold text-pink-400 mb-2">100%</p>
+                    <p class="text-sm text-gray-400">Propriétaire</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/10 px-6 py-12 text-center text-gray-500">
+        <p class="mb-2"><a href="https://brutux.studio" target="_blank" rel="noopener noreferrer" class="hover:text-gray-300 transition-colors">Brutux Studio</a> © 2026</p>
+        <p class="text-sm">Conseil et développement SaaS — Thonon-les-Bains</p>
+    </footer>
+
+    <script>
+        const suggestions = {
+            1: {
+                format: "Image",
+                emoji: "📈",
+                gradient: "from-blue-500 to-blue-600",
+                text: "Les taux d'intérêt baissent en fin d'année. C'est le moment idéal pour tes clients qui envisageaient un achat immobilier. Les prix se stabilisent aussi, créant une opportunité unique pour les acheteurs avisés.",
+                hashtags: "#immobilier #taux #marché2024"
+            },
+            2: {
+                format: "Carousel (5 images)",
+                emoji: "⚠️",
+                gradient: "from-orange-500 to-red-500",
+                text: "Les 5 erreurs les plus coûteuses en immobilier:\n\n1️⃣ Ne pas vérifier l'état réel de la propriété\n2️⃣ Négliger le coût total (charges, impôts)\n3️⃣ Accepter le premier taux proposé\n4️⃣ Ignorer la localisation future\n5️⃣ Signer trop vite",
+                hashtags: "#conseil #immobilier #achat"
+            },
+            3: {
+                format: "Image + texte long",
+                emoji: "💰",
+                gradient: "from-green-500 to-emerald-500",
+                text: "La négociation du taux est crucial pour ton emprunt immobilier. Chaque 0,1% d'économie représente des milliers d'euros sur la durée du crédit. Voici comment maximiser tes chances d'obtenir le meilleur taux.",
+                hashtags: "#taux #négociation #crédit"
+            },
+            4: {
+                format: "Design infographique",
+                emoji: "📊",
+                gradient: "from-purple-500 to-indigo-500",
+                text: "Évolution des taux immobiliers en 2024:\n\n📈 Janvier: 4,2%\n📈 Juin: 3,8%\n📈 Septembre: 3,4%\n📈 Décembre: 3,2%\n\nTendance: À la baisse ⬇️",
+                hashtags: "#statistiques #marché #2024"
+            }
+        };
+
+        document.querySelectorAll('.suggestion-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const id = this.dataset.id;
+                const data = suggestions[id];
+
+                // Update active state
+                document.querySelectorAll('.suggestion-item').forEach(i => i.classList.remove('active'));
+                this.classList.add('active');
+
+                // Update content preview
+                const preview = `
+                    <div class="step-indicator mb-6">
+                        <span class="flex items-center justify-center w-6 h-6 rounded-full bg-purple-500 text-xs font-bold">2</span>
+                        Contenu généré
+                    </div>
+
+                    <div class="post-preview">
+                        <div class="post-image" style="background: linear-gradient(135deg, ${data.gradient === 'from-blue-500 to-blue-600' ? '#3b82f6 0%, #2563eb 100%' : data.gradient === 'from-orange-500 to-red-500' ? '#f97316 0%, #dc2626 100%' : data.gradient === 'from-green-500 to-emerald-500' ? '#22c55e 0%, #059669 100%' : '#a855f7 0%, #4f46e5 100%'});">
+                            ${data.emoji}
+                        </div>
+                        <div class="post-content">
+                            <div style="font-size: 11px; color: #666; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">
+                                ${data.format}
+                            </div>
+                            <div class="post-text" style="white-space: pre-line;">
+                                ${data.text}
+                            </div>
+                            <div class="post-hashtags">${data.hashtags}</div>
+                            <div class="post-footer">
+                                <span>👍 42K</span>
+                                <span>💬 1.2K</span>
+                                <span>↗️ 8.5K</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                document.getElementById('contentPreview').innerHTML = preview;
+            });
+        });
+
+        // Trigger first item on load
+        document.querySelector('.suggestion-item[data-id="1"]').click();
+    </script>
+</body>
+</html>
